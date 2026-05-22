@@ -1,0 +1,8 @@
+offline_mode: true
+bind_address: "127.0.0.1"
+allow_external_bind: false
+execute_commands: false
+allow_outbound_network: false
+use_cloud_ai: false
+store_real_credentials: false
+dashboard_bind_address: "127.0.0.1"

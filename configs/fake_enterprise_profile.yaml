@@ -1,0 +1,4 @@
+company: {name: "Example Financial Services", industry: "Financial Services", domain: "corp.example.local"}
+fake_users: ["svc-backup","svc-reporting","jsmith","mgarcia","appadmin"]
+canary_values:
+  - {type: "fake_api_key", value: "AKIA_FAKE_CANARY_DO_NOT_USE_001"}
