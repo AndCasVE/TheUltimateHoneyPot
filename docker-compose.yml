@@ -1,0 +1,23 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:2222:2222"
+    volumes:
+      - ./logs:/app/logs
+      - ./configs:/app/configs
+      - ./reports:/app/reports
+    environment:
+      - OFFLINE_MODE=true
+      - USE_CLOUD_AI=false
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on: [backend]
+  ollama:
+    image: ollama/ollama
+    ports: ["127.0.0.1:11434:11434"]
+    volumes: ["ollama:/root/.ollama"]
+volumes: {ollama:{}}
